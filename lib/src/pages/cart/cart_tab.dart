@@ -6,6 +6,8 @@ import 'package:green_grocer/src/models/cart_item_model.dart';
 import 'package:green_grocer/src/pages/cart/components/cart_tile.dart';
 import 'package:green_grocer/src/services/utils_services.dart';
 
+import '../common_widgets/payment_dialog.dart';
+
 class CartTab extends StatefulWidget {
   const CartTab({super.key});
 
@@ -85,8 +87,11 @@ class _CartTabState extends State<CartTab> {
                             borderRadius: BorderRadius.circular(18))),
                     onPressed: () async {
                       bool? result = await showOrderConfirmation();
-                      if (kDebugMode) {
-                        print(result);
+                      if (result == true) {
+                        showDialog(
+                          context: context,
+                          builder: (_) => PaymentDialog(order: orders[0]),
+                        );
                       }
                     },
                     child: const Text(

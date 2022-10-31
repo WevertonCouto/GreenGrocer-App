@@ -36,7 +36,7 @@ class _ProductScreenState extends State<ProductScreen> {
               ),
               Expanded(
                   child: Padding(
-                padding: const EdgeInsets.all(32.0),
+                padding: const EdgeInsets.all(16.0),
                 child: Container(
                   decoration: BoxDecoration(
                       color: Colors.white,
@@ -46,78 +46,81 @@ class _ProductScreenState extends State<ProductScreen> {
                       boxShadow: [
                         BoxShadow(
                           color: Colors.grey.shade600,
-                          offset: const Offset(0, 2),
+                          // offset: const Offset(0, 2),
                         ),
                       ]),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      // Name - Quant
-                      Row(
-                        children: [
-                          Expanded(
-                            child: Text(
-                              widget.item.itemName,
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
-                              style: const TextStyle(
-                                  fontSize: 27, fontWeight: FontWeight.bold),
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        // Name - Quant
+                        Row(
+                          children: [
+                            Expanded(
+                              child: Text(
+                                widget.item.itemName,
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                                style: const TextStyle(
+                                    fontSize: 27, fontWeight: FontWeight.bold),
+                              ),
                             ),
-                          ),
-                          SizedBox(
-                            height: 30,
-                            width: 70,
-                            child: QuantityWidget(
-                              suffixText: widget.item.unit,
-                              value: cartItemQuantity,
-                              result: ((int quantity) {
-                                setState(() {
-                                  cartItemQuantity = quantity;
-                                });
-                              }),
-                            ),
-                          )
-                        ],
-                      ),
-                      // Price
-                      Text(
-                        UtilsServices.priceToCurrency(widget.item.price),
-                        style: TextStyle(
-                            fontSize: 23,
-                            fontWeight: FontWeight.bold,
-                            color: CustomColors.customSwatchColor),
-                      ),
-                      // Description
-                      Expanded(
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 10),
-                          child: SingleChildScrollView(
-                            child: Text(
-                              widget.item.description,
-                              style: const TextStyle(height: 1.5),
-                            ),
-                          ),
+                            SizedBox(
+                              height: 30,
+                              width: 100,
+                              child: QuantityWidget(
+                                suffixText: widget.item.unit,
+                                value: cartItemQuantity,
+                                result: ((int quantity) {
+                                  setState(() {
+                                    cartItemQuantity = quantity;
+                                  });
+                                }),
+                              ),
+                            )
+                          ],
                         ),
-                      ),
-                      //  add button
-                      SizedBox(
-                        height: 55,
-                        child: ElevatedButton.icon(
-                          label: const Text(
-                            'Add no carrinho',
-                            style: TextStyle(
-                              fontSize: 18,
+                        // Price
+                        Text(
+                          UtilsServices.priceToCurrency(widget.item.price),
+                          style: TextStyle(
+                              fontSize: 23,
                               fontWeight: FontWeight.bold,
+                              color: CustomColors.customSwatchColor),
+                        ),
+                        // Description
+                        Expanded(
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 10),
+                            child: SingleChildScrollView(
+                              child: Text(
+                                widget.item.description,
+                                style: const TextStyle(height: 1.5),
+                              ),
                             ),
                           ),
-                          icon: const Icon(Icons.shopping_cart_outlined),
-                          onPressed: () {},
-                          style: ElevatedButton.styleFrom(
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(15))),
                         ),
-                      ),
-                    ],
+                        //  add button
+                        SizedBox(
+                          height: 55,
+                          child: ElevatedButton.icon(
+                            label: const Text(
+                              'Add no carrinho',
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            icon: const Icon(Icons.shopping_cart_outlined),
+                            onPressed: () {},
+                            style: ElevatedButton.styleFrom(
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(15))),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ))
