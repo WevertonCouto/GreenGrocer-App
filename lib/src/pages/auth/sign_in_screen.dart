@@ -5,6 +5,8 @@ import 'package:green_grocer/src/pages/auth/sign_up_screen.dart';
 import 'package:green_grocer/src/pages/base/base_screen.dart';
 import 'package:green_grocer/src/config/custom_colors.dart';
 
+import '../common_widgets/app_name_widget.dart';
+
 class SignInScreen extends StatelessWidget {
   const SignInScreen({super.key});
   @override
@@ -25,19 +27,10 @@ class SignInScreen extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     // app name
-                    Text.rich(TextSpan(
-                        style: const TextStyle(fontSize: 40),
-                        children: [
-                          const TextSpan(
-                              text: 'Green',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold)),
-                          TextSpan(
-                              text: 'grocer',
-                              style: TextStyle(
-                                  color: CustomColors.customContrastColor))
-                        ])),
+                    const AppNameWidget(
+                      greenTitleColor: Colors.white,
+                      textSize: 40,
+                    ),
                     // category
                     SizedBox(
                       height: 30,
