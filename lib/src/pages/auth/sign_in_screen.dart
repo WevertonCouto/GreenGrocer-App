@@ -2,8 +2,6 @@ import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:green_grocer/src/pages/common_widgets/custom_text_field.dart';
-import 'package:green_grocer/src/pages/auth/sign_up_screen.dart';
-import 'package:green_grocer/src/pages/base/base_screen.dart';
 import 'package:green_grocer/src/config/custom_colors.dart';
 
 import '../../pages_route/app_pages.dart';
@@ -13,6 +11,8 @@ class SignInScreen extends StatelessWidget {
   SignInScreen({super.key});
 
   final _formKey = GlobalKey<FormState>();
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -70,6 +70,7 @@ class SignInScreen extends StatelessWidget {
                     children: [
                       //Email text
                       CustomTextField(
+                        controller: _emailController,
                         iconData: Icons.email,
                         label: 'Email',
                         validator: (email) {
@@ -82,6 +83,7 @@ class SignInScreen extends StatelessWidget {
                       ),
                       //Password text
                       CustomTextField(
+                        controller: _passwordController,
                         iconData: Icons.password,
                         label: 'Senha',
                         isSecret: true,
@@ -101,6 +103,9 @@ class SignInScreen extends StatelessWidget {
                                 shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(18))),
                             onPressed: () {
+                              String email = _emailController.text;
+                              String password = _passwordController.text;
+
                               if (_formKey.currentState!.validate()) {
                                 Get.offNamed(PagesRoutes.baseRoute);
                               }
