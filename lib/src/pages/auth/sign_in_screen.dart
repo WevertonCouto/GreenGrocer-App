@@ -10,7 +10,10 @@ import '../../pages_route/app_pages.dart';
 import '../common_widgets/app_name_widget.dart';
 
 class SignInScreen extends StatelessWidget {
-  const SignInScreen({super.key});
+  SignInScreen({super.key});
+
+  final _formKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -21,128 +24,150 @@ class SignInScreen extends StatelessWidget {
         child: SizedBox(
           height: size.height,
           width: size.width,
-          child: Column(
-            children: [
-              // app name and category
-              Expanded(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    // app name
-                    const AppNameWidget(
-                      greenTitleColor: Colors.white,
-                      textSize: 40,
-                    ),
-                    // category
-                    SizedBox(
-                      height: 30,
-                      child: DefaultTextStyle(
-                        style: const TextStyle(fontSize: 25),
-                        child: AnimatedTextKit(
-                            pause: Duration.zero,
-                            repeatForever: true,
-                            animatedTexts: [
-                              FadeAnimatedText('Frutas'),
-                              FadeAnimatedText('Verduras'),
-                              FadeAnimatedText('Legumes'),
-                              FadeAnimatedText('Carnes'),
-                            ]),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              children: [
+                // app name and category
+                Expanded(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      // app name
+                      const AppNameWidget(
+                        greenTitleColor: Colors.white,
+                        textSize: 40,
                       ),
-                    ),
-                  ],
-                ),
-              ),
-              // Form
-              Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 32, vertical: 40),
-                decoration: const BoxDecoration(
-                    color: Colors.white,
-                    borderRadius:
-                        BorderRadius.vertical(top: Radius.circular(45))),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    //Email text
-                    const CustomTextField(
-                        iconData: Icons.email, label: 'Email'),
-                    //Password text
-                    const CustomTextField(
-                        iconData: Icons.password,
-                        label: 'Senha',
-                        isSecret: true),
-                    // Login button
-                    SizedBox(
-                      height: 50,
-                      child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(18))),
-                          onPressed: () {
-                            Get.offNamed(PagesRoutes.baseRoute);
-                          },
-                          child: const Text(
-                            'Entrar',
-                            style: TextStyle(fontSize: 18),
-                          )),
-                    ),
-                    // forgot password buttom
-                    Align(
-                      alignment: Alignment.centerRight,
-                      child: TextButton(
-                        onPressed: () {},
-                        child: Text(
-                          'Esqueceu a senha?',
-                          style: TextStyle(
-                              color: CustomColors.customContrastColor),
+                      // category
+                      SizedBox(
+                        height: 30,
+                        child: DefaultTextStyle(
+                          style: const TextStyle(fontSize: 25),
+                          child: AnimatedTextKit(
+                              pause: Duration.zero,
+                              repeatForever: true,
+                              animatedTexts: [
+                                FadeAnimatedText('Frutas'),
+                                FadeAnimatedText('Verduras'),
+                                FadeAnimatedText('Legumes'),
+                                FadeAnimatedText('Carnes'),
+                              ]),
                         ),
                       ),
-                    ),
-                    // Divider
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 10),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: Divider(
-                              color: Colors.grey.withAlpha(90),
-                              thickness: 2,
-                            ),
-                          ),
-                          const Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 15),
-                            child: Text('Ou'),
-                          ),
-                          Expanded(
-                            child: Divider(
-                              color: Colors.grey.withAlpha(90),
-                              thickness: 2,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    // new user button
-                    SizedBox(
-                      height: 50,
-                      child: OutlinedButton(
-                          style: OutlinedButton.styleFrom(
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(18)),
-                              side: const BorderSide(
-                                  width: 2, color: Colors.green)),
-                          onPressed: () {
-                            Get.toNamed(PagesRoutes.signUpRoute);
-                          },
-                          child: const Text(
-                            'Criar conta',
-                            style: TextStyle(fontSize: 18),
-                          )),
-                    )
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-            ],
+                // Form
+                Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 32, vertical: 40),
+                  decoration: const BoxDecoration(
+                      color: Colors.white,
+                      borderRadius:
+                          BorderRadius.vertical(top: Radius.circular(45))),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      //Email text
+                      CustomTextField(
+                        iconData: Icons.email,
+                        label: 'Email',
+                        validator: (email) {
+                          if (email == null || email.isEmpty) {
+                            return 'Type your email.';
+                          }
+                          if (!email.isEmail) return 'Invalid email.';
+                          return null;
+                        },
+                      ),
+                      //Password text
+                      CustomTextField(
+                        iconData: Icons.password,
+                        label: 'Senha',
+                        isSecret: true,
+                        validator: (String? password) {
+                          if (password == null || password.isEmpty) {
+                            return 'Type your password.';
+                          }
+                          if (password.length < 7) return 'Invalid password.';
+                          return null;
+                        },
+                      ),
+                      // Login button
+                      SizedBox(
+                        height: 50,
+                        child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(18))),
+                            onPressed: () {
+                              if (_formKey.currentState!.validate()) {
+                                Get.offNamed(PagesRoutes.baseRoute);
+                              }
+                            },
+                            child: const Text(
+                              'Entrar',
+                              style: TextStyle(fontSize: 18),
+                            )),
+                      ),
+                      // forgot password button
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: TextButton(
+                          onPressed: () {},
+                          child: Text(
+                            'Esqueceu a senha?',
+                            style: TextStyle(
+                                color: CustomColors.customContrastColor),
+                          ),
+                        ),
+                      ),
+                      // Divider
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 10),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: Divider(
+                                color: Colors.grey.withAlpha(90),
+                                thickness: 2,
+                              ),
+                            ),
+                            const Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 15),
+                              child: Text('Ou'),
+                            ),
+                            Expanded(
+                              child: Divider(
+                                color: Colors.grey.withAlpha(90),
+                                thickness: 2,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      // new user button
+                      SizedBox(
+                        height: 50,
+                        child: OutlinedButton(
+                            style: OutlinedButton.styleFrom(
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(18)),
+                                side: const BorderSide(
+                                    width: 2, color: Colors.green)),
+                            onPressed: () {
+                              Get.toNamed(PagesRoutes.signUpRoute);
+                            },
+                            child: const Text(
+                              'Criar conta',
+                              style: TextStyle(fontSize: 18),
+                            )),
+                      )
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

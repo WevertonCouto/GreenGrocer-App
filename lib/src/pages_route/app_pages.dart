@@ -14,7 +14,7 @@ abstract class AppPages {
     ),
     GetPage(
       name: '/signin',
-      page: () => const SignInScreen(),
+      page: () => SignInScreen(),
     ),
     GetPage(
       name: '/signup',
