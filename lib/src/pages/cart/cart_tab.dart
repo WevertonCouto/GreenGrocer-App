@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:green_grocer/src/config/app_data.dart';
 import 'package:green_grocer/src/config/custom_colors.dart';
