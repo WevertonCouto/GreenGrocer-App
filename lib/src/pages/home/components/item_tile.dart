@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:green_grocer/src/config/custom_colors.dart';
 import 'package:green_grocer/src/models/item_model.dart';
-import 'package:green_grocer/src/pages/product/product_screen.dart';
 import 'package:green_grocer/src/pages_route/app_pages.dart';
 
 import '../../../services/utils_services.dart';
