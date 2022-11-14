@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:green_grocer/src/config/app_data.dart';
 import 'package:green_grocer/src/pages/common_widgets/custom_text_field.dart';
+
+import '../auth/controller/auth_controller.dart';
 
 class ProfileTab extends StatefulWidget {
   const ProfileTab({super.key});
@@ -10,6 +13,8 @@ class ProfileTab extends StatefulWidget {
 }
 
 class _ProfileTabState extends State<ProfileTab> {
+  final authController = Get.find<AuthController>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -17,7 +22,9 @@ class _ProfileTabState extends State<ProfileTab> {
         title: const Text('Perfil do usuário'),
         actions: [
           IconButton(
-              onPressed: () {},
+              onPressed: () {
+                authController.signOut();
+              },
               icon: const Icon(
                 Icons.logout_outlined,
                 color: Colors.white,
@@ -32,7 +39,7 @@ class _ProfileTabState extends State<ProfileTab> {
           CustomTextField(
             iconData: Icons.email,
             label: 'Email',
-            initialText: userModel.email,
+            initialText: authController.userModel.email,
             readOnly: true,
           ),
 
@@ -40,7 +47,7 @@ class _ProfileTabState extends State<ProfileTab> {
           CustomTextField(
             iconData: Icons.person,
             label: 'Nome',
-            initialText: userModel.name,
+            initialText: authController.userModel.name,
             readOnly: true,
           ),
 
@@ -48,7 +55,7 @@ class _ProfileTabState extends State<ProfileTab> {
           CustomTextField(
             iconData: Icons.phone,
             label: 'Celular',
-            initialText: userModel.phone,
+            initialText: authController.userModel.phone,
             readOnly: true,
           ),
 
@@ -57,7 +64,7 @@ class _ProfileTabState extends State<ProfileTab> {
             iconData: Icons.file_copy,
             label: 'CPF',
             isSecret: true,
-            initialText: userModel.cpf,
+            initialText: authController.userModel.cpf,
             readOnly: true,
           ),
 

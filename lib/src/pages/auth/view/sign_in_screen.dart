@@ -6,6 +6,7 @@ import 'package:green_grocer/src/pages/common_widgets/custom_text_field.dart';
 import 'package:green_grocer/src/config/custom_colors.dart';
 
 import '../../../pages_route/app_pages.dart';
+import '../../../services/validators.dart';
 import '../../common_widgets/app_name_widget.dart';
 
 class SignInScreen extends StatelessWidget {
@@ -74,13 +75,7 @@ class SignInScreen extends StatelessWidget {
                         controller: _emailController,
                         iconData: Icons.email,
                         label: 'Email',
-                        validator: (email) {
-                          if (email == null || email.isEmpty) {
-                            return 'Type your email.';
-                          }
-                          if (!email.isEmail) return 'Invalid email.';
-                          return null;
-                        },
+                        validator: emailValidator,
                       ),
                       //Password text
                       CustomTextField(
@@ -88,13 +83,7 @@ class SignInScreen extends StatelessWidget {
                         iconData: Icons.password,
                         label: 'Senha',
                         isSecret: true,
-                        validator: (String? password) {
-                          if (password == null || password.isEmpty) {
-                            return 'Type your password.';
-                          }
-                          if (password.length < 7) return 'Invalid password.';
-                          return null;
-                        },
+                        validator: passwordValidator,
                       ),
                       // Login button
                       SizedBox(

@@ -8,10 +8,26 @@ import 'auth_errors.dart';
 class AuthRepository {
   final HttpManager _httpManager = HttpManager();
 
+  AuthResult handleUserOrError(Map<dynamic, dynamic> result) {
+    if (result['result'] != null) {
+      return AuthResult.success(
+        UserModel.fromJson(
+          result['result'],
+        ),
+      );
+    } else {
+      return AuthResult.error(
+        authErrorsString(
+          result['error'],
+        ),
+      );
+    }
+  }
+
   Future<AuthResult> validateToken({required String token}) async {
     final result = await _httpManager.restRequest(
         url: Endpoints.validateToken,
-        method: HttpMethods.get,
+        method: HttpMethods.post,
         headers: {'X-Parse-Session-Token': token});
 
     if (result['result'] != null) {
@@ -42,18 +58,16 @@ class AuthRepository {
       },
     );
 
-    if (result['result'] != null) {
-      return AuthResult.success(
-        UserModel.fromJson(
-          result['result'],
-        ),
-      );
-    } else {
-      return AuthResult.error(
-        authErrorsString(
-          result['error'],
-        ),
-      );
-    }
+    return handleUserOrError(result);
+  }
+
+  Future<AuthResult> signUp(UserModel user) async {
+    final result = await _httpManager.restRequest(
+      url: Endpoints.signup,
+      method: HttpMethods.post,
+      body: user.toJson(),
+    );
+
+    return handleUserOrError(result);
   }
 }

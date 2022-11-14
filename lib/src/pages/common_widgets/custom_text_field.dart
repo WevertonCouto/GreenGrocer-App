@@ -10,6 +10,8 @@ class CustomTextField extends StatefulWidget {
   final bool readOnly;
   final String? Function(String?)? validator;
   final TextEditingController? controller;
+  final TextInputType? keyboardType;
+  final void Function(String?)? onSaved;
 
   const CustomTextField(
       {required this.iconData,
@@ -20,6 +22,8 @@ class CustomTextField extends StatefulWidget {
       this.readOnly = false,
       this.validator,
       this.controller,
+      this.keyboardType,
+      this.onSaved,
       super.key});
   @override
   State<CustomTextField> createState() => _CustomTextFieldState();
@@ -46,22 +50,30 @@ class _CustomTextFieldState extends State<CustomTextField> {
         inputFormatters: widget.inputFormatters,
         obscureText: isObscure,
         validator: widget.validator,
+        keyboardType: widget.keyboardType,
+        onSaved: widget.onSaved,
         decoration: InputDecoration(
-            suffixIcon: widget.isSecret
-                ? IconButton(
-                    onPressed: () {
-                      setState(() {
+          suffixIcon: widget.isSecret
+              ? IconButton(
+                  onPressed: () {
+                    setState(
+                      () {
                         isObscure = !isObscure;
-                      });
-                    },
-                    icon: Icon(
-                        isObscure ? Icons.visibility : Icons.visibility_off))
-                : null,
-            prefixIcon: Icon(widget.iconData),
-            labelText: widget.label,
-            isDense: true,
-            border:
-                OutlineInputBorder(borderRadius: BorderRadius.circular(18))),
+                      },
+                    );
+                  },
+                  icon: Icon(
+                    isObscure ? Icons.visibility : Icons.visibility_off,
+                  ),
+                )
+              : null,
+          prefixIcon: Icon(widget.iconData),
+          labelText: widget.label,
+          isDense: true,
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(18),
+          ),
+        ),
       ),
     );
   }
