@@ -84,6 +84,10 @@ class AuthController extends GetxController {
     );
   }
 
+  Future<void> resetPassword(String email) async {
+    await authRepository.resetPassword(email);
+  }
+
   void saveTokenAndProceedToBase() async {
     await UtilsServices.saveLocalData(
         key: StorageKeys.token, data: userModel.token!);

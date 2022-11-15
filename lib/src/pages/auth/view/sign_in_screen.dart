@@ -2,8 +2,10 @@ import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:green_grocer/src/pages/auth/controller/auth_controller.dart';
+import 'package:green_grocer/src/pages/auth/view/components/forgot_password_widget.dart';
 import 'package:green_grocer/src/pages/common_widgets/custom_text_field.dart';
 import 'package:green_grocer/src/config/custom_colors.dart';
+import 'package:green_grocer/src/services/utils_services.dart';
 
 import '../../../pages_route/app_pages.dart';
 import '../../../services/validators.dart';
@@ -123,7 +125,21 @@ class SignInScreen extends StatelessWidget {
                       Align(
                         alignment: Alignment.centerRight,
                         child: TextButton(
-                          onPressed: () {},
+                          onPressed: () async {
+                            if (_emailController.text.isNotEmpty) {
+                              final bool? result = await Get.dialog(
+                                  ForgotPasswordDialog(
+                                      email: _emailController.text));
+                              if (result ?? false) {
+                                UtilsServices.showToast(
+                                    message:
+                                        'Um link de recuperação foi enviado para o seu email.');
+                              }
+                            } else {
+                              UtilsServices.showToast(
+                                  message: 'Preencha o Email.', isError: true);
+                            }
+                          },
                           child: Text(
                             'Esqueceu a senha?',
                             style: TextStyle(
