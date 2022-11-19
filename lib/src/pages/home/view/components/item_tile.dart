@@ -4,7 +4,7 @@ import 'package:green_grocer/src/config/custom_colors.dart';
 import 'package:green_grocer/src/models/item_model.dart';
 import 'package:green_grocer/src/pages_route/app_pages.dart';
 
-import '../../../services/utils_services.dart';
+import '../../../../services/utils_services.dart';
 
 class ItemTile extends StatefulWidget {
   final ItemModel item;
@@ -59,7 +59,7 @@ class _ItemTileState extends State<ItemTile> {
                   Expanded(
                     child: Hero(
                         tag: widget.item.itemName,
-                        child: Image.asset(
+                        child: Image.network(
                           widget.item.imgUrl,
                           key: imageGlobalKey,
                         )),

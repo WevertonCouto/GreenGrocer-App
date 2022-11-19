@@ -1,23 +1,28 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:green_grocer/src/config/custom_colors.dart';
 import 'package:green_grocer/src/models/item_model.dart';
+import 'package:green_grocer/src/pages/base/controller/navigation_controller.dart';
 import 'package:green_grocer/src/pages/common_widgets/quantity_widget.dart';
 import 'package:green_grocer/src/services/utils_services.dart';
 
 class ProductScreen extends StatefulWidget {
-  const ProductScreen({
-    super.key,
-    required this.item,
-  });
-
-  final ItemModel item;
-
+  const ProductScreen({super.key});
   @override
   State<ProductScreen> createState() => _ProductScreenState();
 }
 
 class _ProductScreenState extends State<ProductScreen> {
   int cartItemQuantity = 1;
+  late ItemModel item;
+
+  @override
+  void initState() {
+    item = Get.arguments;
+    super.initState();
+  }
+
+  final navigatonController = Get.find<NavigationController>();
 
   @override
   Widget build(BuildContext context) {
@@ -30,8 +35,8 @@ class _ProductScreenState extends State<ProductScreen> {
             children: [
               Expanded(
                 child: Hero(
-                  tag: widget.item.imgUrl,
-                  child: Image.asset(widget.item.imgUrl),
+                  tag: item.imgUrl,
+                  child: Image.network(item.imgUrl),
                 ),
               ),
               Expanded(
@@ -59,7 +64,7 @@ class _ProductScreenState extends State<ProductScreen> {
                           children: [
                             Expanded(
                               child: Text(
-                                widget.item.itemName,
+                                item.itemName,
                                 maxLines: 2,
                                 overflow: TextOverflow.ellipsis,
                                 style: const TextStyle(
@@ -70,7 +75,7 @@ class _ProductScreenState extends State<ProductScreen> {
                               height: 30,
                               width: 100,
                               child: QuantityWidget(
-                                suffixText: widget.item.unit,
+                                suffixText: item.unit,
                                 value: cartItemQuantity,
                                 result: ((int quantity) {
                                   setState(() {
@@ -83,7 +88,7 @@ class _ProductScreenState extends State<ProductScreen> {
                         ),
                         // Price
                         Text(
-                          UtilsServices.priceToCurrency(widget.item.price),
+                          UtilsServices.priceToCurrency(item.price),
                           style: TextStyle(
                               fontSize: 23,
                               fontWeight: FontWeight.bold,
@@ -95,7 +100,7 @@ class _ProductScreenState extends State<ProductScreen> {
                             padding: const EdgeInsets.symmetric(vertical: 10),
                             child: SingleChildScrollView(
                               child: Text(
-                                widget.item.description,
+                                item.description,
                                 style: const TextStyle(height: 1.5),
                               ),
                             ),
@@ -113,7 +118,11 @@ class _ProductScreenState extends State<ProductScreen> {
                               ),
                             ),
                             icon: const Icon(Icons.shopping_cart_outlined),
-                            onPressed: () {},
+                            onPressed: () {
+                              Get.back();
+                              navigatonController.navigatePageView(
+                                  page: NavigationTabs.cart);
+                            },
                             style: ElevatedButton.styleFrom(
                                 shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(15))),

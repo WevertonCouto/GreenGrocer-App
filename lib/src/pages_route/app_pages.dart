@@ -1,6 +1,9 @@
 import 'package:get/get.dart';
 import 'package:green_grocer/src/models/item_model.dart';
 import 'package:green_grocer/src/pages/base/base_screen.dart';
+import 'package:green_grocer/src/pages/base/binding/navigation_binding.dart';
+import 'package:green_grocer/src/pages/home/binding/home_binding.dart';
+import 'package:green_grocer/src/pages/home/controller/home_controller.dart';
 import 'package:green_grocer/src/pages/product/product_screen.dart';
 import 'package:green_grocer/src/pages/splash/splash_screen.dart';
 
@@ -24,16 +27,11 @@ abstract class AppPages {
     GetPage(
       name: '/base',
       page: () => const BaseScreen(),
+      bindings: [HomeBinding(), NavigationBinding()],
     ),
     GetPage(
       name: '/product',
-      page: () => ProductScreen(
-          item: ItemModel(
-              description: '',
-              imgUrl: '',
-              itemName: '',
-              price: 0.0,
-              unit: 'asd')),
+      page: () => const ProductScreen(),
     ),
   ];
 }

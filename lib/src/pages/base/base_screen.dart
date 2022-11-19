@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:green_grocer/src/pages/base/controller/navigation_controller.dart';
 import 'package:green_grocer/src/pages/cart/cart_tab.dart';
-import 'package:green_grocer/src/pages/home/home_tab.dart';
+import 'package:green_grocer/src/pages/home/view/home_tab.dart';
 import 'package:green_grocer/src/pages/orders/orders_tab.dart';
 import 'package:green_grocer/src/pages/profile/profile_tab.dart';
 
@@ -12,15 +14,14 @@ class BaseScreen extends StatefulWidget {
 }
 
 class _BaseScreenState extends State<BaseScreen> {
-  int currentIndex = 0;
-  final pageController = PageController();
+  final navigationController = Get.find<NavigationController>();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: PageView(
         physics: const NeverScrollableScrollPhysics(),
-        controller: pageController,
+        controller: navigationController.pageController,
         children: const [
           HomeTab(),
           CartTab(),
@@ -28,15 +29,12 @@ class _BaseScreenState extends State<BaseScreen> {
           ProfileTab(),
         ],
       ),
-      bottomNavigationBar: BottomNavigationBar(
-          currentIndex: currentIndex,
-          onTap: (index) => setState(() {
-                currentIndex = index;
-                //pageController.jumpToPage(currentIndex);
-                pageController.animateToPage(currentIndex,
-                    duration: const Duration(milliseconds: 700),
-                    curve: Curves.ease);
-              }),
+      bottomNavigationBar: Obx(
+        () => BottomNavigationBar(
+          currentIndex: navigationController.currentIndex,
+          onTap: (index) {
+            navigationController.navigatePageView(page: index);
+          },
           type: BottomNavigationBarType.fixed,
           backgroundColor: Colors.green,
           selectedItemColor: Colors.white,
@@ -50,7 +48,9 @@ class _BaseScreenState extends State<BaseScreen> {
                 icon: Icon(Icons.list_outlined), label: 'Pedidos'),
             BottomNavigationBarItem(
                 icon: Icon(Icons.person_outline), label: 'Perfil'),
-          ]),
+          ],
+        ),
+      ),
     );
   }
 }
