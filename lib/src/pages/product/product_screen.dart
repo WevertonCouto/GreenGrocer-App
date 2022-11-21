@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:green_grocer/src/config/custom_colors.dart';
 import 'package:green_grocer/src/models/item_model.dart';
 import 'package:green_grocer/src/pages/base/controller/navigation_controller.dart';
+import 'package:green_grocer/src/pages/cart/controller/cart_controller.dart';
 import 'package:green_grocer/src/pages/common_widgets/quantity_widget.dart';
 import 'package:green_grocer/src/services/utils_services.dart';
 
@@ -23,6 +24,7 @@ class _ProductScreenState extends State<ProductScreen> {
   }
 
   final navigatonController = Get.find<NavigationController>();
+  final cartController = Get.find<CartController>();
 
   @override
   Widget build(BuildContext context) {
@@ -118,10 +120,15 @@ class _ProductScreenState extends State<ProductScreen> {
                               ),
                             ),
                             icon: const Icon(Icons.shopping_cart_outlined),
-                            onPressed: () {
+                            onPressed: () async {
                               Get.back();
+                              await cartController.addItemToCart(
+                                item: item,
+                                quantity: cartItemQuantity,
+                              );
                               navigatonController.navigatePageView(
-                                  page: NavigationTabs.cart);
+                                page: NavigationTabs.cart,
+                              );
                             },
                             style: ElevatedButton.styleFrom(
                                 shape: RoundedRectangleBorder(

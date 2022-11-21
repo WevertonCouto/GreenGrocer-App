@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:green_grocer/src/config/custom_colors.dart';
 import 'package:green_grocer/src/models/item_model.dart';
+import 'package:green_grocer/src/pages/cart/controller/cart_controller.dart';
 import 'package:green_grocer/src/pages_route/app_pages.dart';
 
 import '../../../../services/utils_services.dart';
@@ -24,6 +25,7 @@ class _ItemTileState extends State<ItemTile> {
   final GlobalKey imageGlobalKey = GlobalKey();
 
   IconData tileIcon = Icons.add_shopping_cart_outlined;
+  final cartController = Get.find<CartController>();
 
   Future<void> switchIcon() async {
     setState(() {
@@ -110,8 +112,9 @@ class _ItemTileState extends State<ItemTile> {
             ),
             child: Material(
               child: InkWell(
-                onTap: () {
+                onTap: () async {
                   switchIcon();
+                  await cartController.addItemToCart(item: widget.item);
                   widget.cartAnimationMethod(imageGlobalKey);
                 },
                 child: Ink(
