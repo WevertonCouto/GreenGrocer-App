@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:green_grocer/src/pages/base/controller/navigation_controller.dart';
 import 'package:green_grocer/src/pages/home/view/home_tab.dart';
-import 'package:green_grocer/src/pages/orders/orders_tab.dart';
+import 'package:green_grocer/src/pages/orders/view/orders_tab.dart';
 import 'package:green_grocer/src/pages/profile/profile_tab.dart';
 
 import '../cart/view/cart_tab.dart';
