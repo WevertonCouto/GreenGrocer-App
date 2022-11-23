@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:green_grocer/src/pages/common_widgets/custom_text_field.dart';
+import 'package:green_grocer/src/services/validators.dart';
 
 import '../auth/controller/auth_controller.dart';
 
@@ -13,6 +14,8 @@ class ProfileTab extends StatefulWidget {
 
 class _ProfileTabState extends State<ProfileTab> {
   final authController = Get.find<AuthController>();
+  final newPasswordController = TextEditingController();
+  final currentPasswordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -86,6 +89,8 @@ class _ProfileTabState extends State<ProfileTab> {
   }
 
   Future<bool?> updatePassword() {
+    final _formKey = GlobalKey<FormState>();
+
     return showDialog(
       context: context,
       builder: (context) {
@@ -97,48 +102,84 @@ class _ProfileTabState extends State<ProfileTab> {
             children: [
               Padding(
                 padding: const EdgeInsets.all(16),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    //title
-                    const Padding(
-                      padding: EdgeInsets.symmetric(vertical: 12),
-                      child: Text(
-                        'Atualização de senha',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.bold),
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      //title
+                      const Padding(
+                        padding: EdgeInsets.symmetric(vertical: 12),
+                        child: Text(
+                          'Atualização de senha',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              fontSize: 18, fontWeight: FontWeight.bold),
+                        ),
                       ),
-                    ),
-                    // password
-                    const CustomTextField(
-                      iconData: Icons.lock,
-                      label: 'Senha atual',
-                      isSecret: true,
-                    ),
-                    // new password
-                    const CustomTextField(
-                      iconData: Icons.lock_outline,
-                      label: 'Nova senha',
-                      isSecret: true,
-                    ),
-                    // confirm new password
-                    const CustomTextField(
-                      iconData: Icons.lock_outline,
-                      label: 'Confirmar nova senha',
-                      isSecret: true,
-                    ),
-                    // confirm password btn
-                    SizedBox(
+                      // password
+                      CustomTextField(
+                        controller: currentPasswordController,
+                        iconData: Icons.lock,
+                        label: 'Senha atual',
+                        isSecret: true,
+                        validator: passwordValidator,
+                      ),
+                      // new password
+                      CustomTextField(
+                        controller: newPasswordController,
+                        iconData: Icons.lock_outline,
+                        label: 'Nova senha',
+                        isSecret: true,
+                        validator: passwordValidator,
+                      ),
+                      // confirm new password
+                      CustomTextField(
+                        iconData: Icons.lock_outline,
+                        label: 'Confirmar nova senha',
+                        isSecret: true,
+                        validator: (password) {
+                          final result = passwordValidator(password);
+                          if (result != null) {
+                            return result;
+                          }
+
+                          if (password != newPasswordController.text) {
+                            return 'AS senhas não são equivalentes.';
+                          }
+
+                          return null;
+                        },
+                      ),
+                      // confirm password btn
+                      SizedBox(
                         height: 45,
-                        child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
+                        child: Obx(() => ElevatedButton(
+                              style: ElevatedButton.styleFrom(
                                 shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(20))),
-                            onPressed: () {},
-                            child: const Text('Atualizar')))
-                  ],
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
+                              ),
+                              onPressed: authController.isLoading.value
+                                  ? null
+                                  : () {
+                                      if (_formKey.currentState!.validate()) {
+                                        authController.changePassword(
+                                          currentPassword:
+                                              currentPasswordController.text,
+                                          newPassword:
+                                              newPasswordController.text,
+                                        );
+                                      }
+                                    },
+                              child: authController.isLoading.value
+                                  ? const CircularProgressIndicator()
+                                  : const Text('Atualizar'),
+                            )),
+                      )
+                    ],
+                  ),
                 ),
               ),
               Positioned(
