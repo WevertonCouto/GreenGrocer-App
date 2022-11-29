@@ -89,7 +89,7 @@ class _ProfileTabState extends State<ProfileTab> {
   }
 
   Future<bool?> updatePassword() {
-    final _formKey = GlobalKey<FormState>();
+    final formKey = GlobalKey<FormState>();
 
     return showDialog(
       context: context,
@@ -103,7 +103,7 @@ class _ProfileTabState extends State<ProfileTab> {
               Padding(
                 padding: const EdgeInsets.all(16),
                 child: Form(
-                  key: _formKey,
+                  key: formKey,
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -164,7 +164,7 @@ class _ProfileTabState extends State<ProfileTab> {
                               onPressed: authController.isLoading.value
                                   ? null
                                   : () {
-                                      if (_formKey.currentState!.validate()) {
+                                      if (formKey.currentState!.validate()) {
                                         authController.changePassword(
                                           currentPassword:
                                               currentPasswordController.text,

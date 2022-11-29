@@ -3,8 +3,6 @@ import 'package:get/get.dart';
 import 'package:green_grocer/src/config/custom_colors.dart';
 import 'package:green_grocer/src/pages/cart/controller/cart_controller.dart';
 import 'package:green_grocer/src/services/utils_services.dart';
-
-import '../../common_widgets/payment_dialog.dart';
 import 'components/cart_tile.dart';
 
 class CartTab extends StatefulWidget {
